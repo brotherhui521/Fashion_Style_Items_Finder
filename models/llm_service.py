@@ -8,6 +8,7 @@ from ibm_watsonx_ai import APIClient
 from ibm_watsonx_ai.foundation_models import ModelInference
 from ibm_watsonx_ai.foundation_models.schema import TextChatParameters
 
+
 # Set up logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
@@ -17,8 +18,8 @@ class LlamaVisionService:
     Provides methods to interact with the Llama 3.2 Vision Instruct model.
     """
     
-    def __init__(self, model_id, project_id, region="us-south", 
-                 temperature=0.2, top_p=0.6, api_key=None, max_tokens=2000):
+    def __init__(self, model_id, project_id, api_key,region="us-south", 
+                 temperature=0.2, top_p=0.6,  max_tokens=2000):
         """
         Initialize the service with the specified model and parameters.
         

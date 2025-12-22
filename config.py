@@ -4,8 +4,9 @@ Configuration settings for the Style Finder application.
 
 # Model and API configuration
 LLAMA_MODEL_ID = "meta-llama/llama-3-2-90b-vision-instruct"
-PROJECT_ID = "skills-network"  # Default project ID for lab environment
+PROJECT_ID = "ae9c72f8-4367-44b7-a2b4-5c32dce37573"  # Default project ID for lab environment. Now it is the sandbox project id
 REGION = "us-south"
+api_key="DAy3S0TUlnhb7hOn_0kVtC3QzjbFEEg8UR9la7z6Qfi5"
 
 # Image processing settings
 IMAGE_SIZE = (224, 224)

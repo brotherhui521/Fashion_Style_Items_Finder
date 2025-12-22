@@ -47,7 +47,8 @@ class StyleFinderApp:
         self.llm_service = LlamaVisionService(
             model_id=config.LLAMA_MODEL_ID,
             project_id=config.PROJECT_ID,
-            region=config.REGION
+            region=config.REGION,
+            api_key=config.api_key
         )
 
     def process_image(self, image):
@@ -226,19 +227,19 @@ def create_gradio_interface(app):
     
     return demo
 
-if __name__ == "__main__":
-    try:
-        # Initialize the app with the dataset
-        app = StyleFinderApp("swift-style-embeddings.pkl")
+# if __name__ == "__main__":
+#     try:
+#         # Initialize the app with the dataset
+#         app = StyleFinderApp("swift-style-embeddings.pkl")
         
-        # Create the Gradio interface
-        demo = create_gradio_interface(app)
+#         # Create the Gradio interface
+#         demo = create_gradio_interface(app)
         
-        # Launch the Gradio interface
-        demo.launch(
-            server_name="127.0.0.1",  
-            server_port=5000,
-            share=True  # Set to False if you don't want to create a public link
-        )
-    except Exception as e:
-        print(f"Error starting the application: {str(e)}") 
+#         # Launch the Gradio interface
+#         demo.launch(
+#             server_name="127.0.0.1",  
+#             server_port=5000,
+#             share=True  # Set to False if you don't want to create a public link
+#         )
+#     except Exception as e:
+#         print(f"Error starting the application: {str(e)}") 
