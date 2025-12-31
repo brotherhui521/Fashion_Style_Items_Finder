@@ -5,27 +5,18 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-
-    - name: Doanlowd IBM Cloud cli and Cloud Registry plugin
+  
+    - name: Set up ibmcloud CLI
+      uses: IBM/actions-ibmcloud-cli@v1
+      with:
+        api_key: ${{ secrets.IBM_CLOUD_API_KEY }}
+        region: us-south
+        group: default
+        plugins: container-service, secrets-manager
+    - name: Run an ibmcloud CLI command
       run: |
-        curl -fsSL https://clis.cloud.ibm.com/install/linux | sh
-
-        
-        ibmcloud plugin repo-add IBM Cloud https://plugins.cloud.ibm.com
-        ibmcloud plugin install container-registry -f
-
-        ibmcloud login --apikey ${{ secrets.IBM_CLOUD_API_KEY }} -r us-south
-        ibmcloud cr login
-    - name: Log in to IBM Cloud
-      run: |
-        ibmcloud login --apikey ${{ secrets.IBM_CLOUD_API_KEY }} -r us-south
-        ibmcloud cr login
+          ibmcloud --version
+          ibmcloud cr login
     - name: Build image
       run: |
         docker build -t us.icr.io/workspace1/fashionstylefinder:latest .
