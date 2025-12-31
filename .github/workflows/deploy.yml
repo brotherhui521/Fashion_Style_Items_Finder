@@ -25,6 +25,7 @@ jobs:
         # Replace us.icr.io with your registry region/domain, and add your namespace and image name
         run: |
           IMAGE_NAME="us.icr.io/workspace1/fashion:latest"
+          ibmcloud cr image-rm fashion
           docker build -t $IMAGE_NAME .
           docker push $IMAGE_NAME
 
