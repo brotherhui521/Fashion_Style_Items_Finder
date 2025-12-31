@@ -21,18 +21,17 @@ jobs:
         run: |
           ibmcloud cr login
 
-      # - name: Build and push Docker image
-      #   # Replace us.icr.io with your registry region/domain, and add your namespace and image name
-      #   run: |
-      #     IMAGE_NAME="us.icr.io/workspace1/fashion:latest"
-      #     docker build --no-cache --progress=plain -t $IMAGE_NAME .
-      #     docker push $IMAGE_NAME
+      - name: Build and push Docker image
+        # Replace us.icr.io with your registry region/domain, and add your namespace and image name
+        run: |
+          IMAGE_NAME="us.icr.io/workspace1/fashion:latest"
+          docker build --no-cache --progress=plain -t $IMAGE_NAME .
+          docker push $IMAGE_NAME
 
       - name: deploy to the code engine ( application/refresh. )
         run: |
-          IMAGE_NAME="private.us.icr.io/workspace1/fashion:latest"
           ibmcloud ce project select -n ce-project-16
           ibmcloud ce application update \
             --name application-c0 \
-            --image $IMAGE_NAME
+            --image private.us.icr.io/workspace1/fashion:latest \
             --registry-secret cr
