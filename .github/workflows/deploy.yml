@@ -27,3 +27,10 @@ jobs:
           IMAGE_NAME="us.icr.io/workspace1/fashion:latest"
           docker build -t $IMAGE_NAME .
           docker push $IMAGE_NAME
+
+      - name: deploy to the code engine ( application/refresh. )
+        run: |
+          ibmcloud ce project select -n ce-project-16
+          ibmcloud ce app update \
+            --name fashionstylefinder \
+            --image $IMAGE_NAME
