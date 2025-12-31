@@ -1,5 +1,4 @@
-
-name: Build and push to ICR
+name: Build and Push to IBM Cloud CR
 
 on:
   push:
@@ -8,25 +7,39 @@ on:
   workflow_dispatch:
 
 jobs:
-
-  build-image:
+  build-and-push:
     runs-on: ubuntu-latest
-    steps:
-    - name: Check out code
-      uses: actions/checkout@v3
+    env:
+      REGISTRY_HOSTNAME: us.icr.io # e.g., us.icr.io, eu.icr.io
+      ICR_NAMESPACE: workspace1 # Your ICR namespace
+      IMAGE_NAME: fashion
+      IMAGE_TAG: latest
 
-    - name: Build and push to ICR
-      id: build-step
-      uses: IBM/code-engine-github-action@v1
-      with:
-        api-key: ${{ secrets.IBM_CLOUD_API_KEY }}
-        resource-group: 'Default'
-        region: 'us-south'
-        project: 'ce-project-16'
-        component: 'build'
-        name: 'ce-build-image'
-        image: private.us.icr.io/wortkspace1/fashion:latest
-        build-source: './'
-    - name: Get image with digest
-      run: | 
-        echo "Image with digest: ${{ steps.build-step.outputs.image-with-digest }}"
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log in to IBM Cloud Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY_HOSTNAME }}
+          username: brotherhui521@gmail.com # The username for API key authentication
+          password: ${{ secrets.IBM_CLOUD_API_KEY }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: |
+            ${{ env.REGISTRY_HOSTNAME }}/${{ env.ICR_NAMESPACE }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+
+      - name: Verify pushed image (Optional, requires IBM Cloud CLI)
+        uses: IBM/actions-ibmcloud-cli@v1
+        with:
+          api_key: ${{ secrets.IBM_CLOUD_API_KEY }}
+          region: us-south # Your IBM Cloud region
+          plugins: container-registry
+
+      - name: Run ibmcloud cr images command
+        run: ibmcloud cr images --restrict ${{ env.ICR_NAMESPACE }}
