@@ -25,7 +25,7 @@ jobs:
         # Replace us.icr.io with your registry region/domain, and add your namespace and image name
         run: |
           IMAGE_NAME="us.icr.io/workspace1/fashion:latest"
-          docker build -t $IMAGE_NAME .
+          docker build --no-cache --progress=plain -t $IMAGE_NAME .
           docker push $IMAGE_NAME
 
       - name: deploy to the code engine ( application/refresh. )

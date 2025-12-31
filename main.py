@@ -26,7 +26,7 @@ class Item(BaseModel):
 
 @fastapp.get("/")
 def read_root():
-    return {"status":"ok. Welcome"}
+    return {"status":"ok. Welcome!!!"}
 
 @fastapp.get("/items/{item_id}")
 def read_item(item_id: int, q: Union[str, None] = None):
