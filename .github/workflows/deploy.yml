@@ -32,7 +32,7 @@ jobs:
         run: |
           IMAGE_NAME="private.us.icr.io/workspace1/fashion:latest"
           ibmcloud ce project select -n ce-project-16
-          ibmcloud ce app update \
+          ibmcloud ce application update \
             --name application-c0 \
             --image $IMAGE_NAME
             --registry-secret cr
