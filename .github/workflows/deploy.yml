@@ -1,33 +1,32 @@
-name: Deploy to IBM Code Engine
+
+name: Build and push to ICR
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
+  workflow_dispatch:
 
 jobs:
-  
-    - name: Set up ibmcloud CLI
-      uses: IBM/actions-ibmcloud-cli@v1
+
+  build-image:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v3
+
+    - name: Build and push to ICR
+      id: build-step
+      uses: IBM/code-engine-github-action@v1
       with:
-        api_key: ${{ secrets.IBM_CLOUD_API_KEY }}
-        region: us-south
-        group: default
-        plugins: container-service, secrets-manager
-    - name: Run an ibmcloud CLI command
-      run: |
-          ibmcloud --version
-          ibmcloud cr login
-    - name: Build image
-      run: |
-        docker build -t us.icr.io/workspace1/fashionstylefinder:latest .
-
-    - name: Push image
-      run: |
-        docker push us.icr.io/workspace1/fashionstylefinder:latest
-
-    - name: Deploy to Code Engine
-      run: |
-        ibmcloud ce project select -n ce-project-16
-        ibmcloud ce app update \
-          --name fashionstylefinder \
-          --image us.icr.io/workspace1/fashionstylefinder:latest
+        api-key: ${{ secrets.IBM_CLOUD_API_KEY }}
+        resource-group: 'Default'
+        region: 'us-south'
+        project: 'ce-project-16'
+        component: 'build'
+        name: 'ce-build-image'
+        image: private.us.icr.io/wortkspace1/fashion:latest
+        build-source: './'
+    - name: Get image with digest
+      run: | 
+        echo "Image with digest: ${{ steps.build-step.outputs.image-with-digest }}"
