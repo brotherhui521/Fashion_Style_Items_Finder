@@ -15,7 +15,7 @@ jobs:
           # Specify your region, e.g., us-south, eu-de, global. For global, use 'icr.io' in image tag.
           region: us-south 
           # Install container-registry plugin
-          plugins: container-registry
+          plugins: container-registry, code-engine
 
       - name: Log in to (Optional if using ibmcloud cr login)
         run: |
