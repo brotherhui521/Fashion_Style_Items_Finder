@@ -30,8 +30,9 @@ jobs:
 
       - name: deploy to the code engine ( application/refresh. )
         run: |
-          IMAGE_NAME="us.icr.io/workspace1/fashion:latest"
+          IMAGE_NAME="private.us.icr.io/workspace1/fashion:latest"
           ibmcloud ce project select -n ce-project-16
           ibmcloud ce app update \
             --name application-c0 \
             --image $IMAGE_NAME
+            --rs cr
