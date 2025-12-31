@@ -1,0 +1,34 @@
+name: Deploy to IBM Code Engine
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Log in to IBM Cloud
+      run: |
+        curl -fsSL https://clis.cloud.ibm.com/install/linux | sh
+        ibmcloud login --apikey ${{ secrets.IBM_CLOUD_API_KEY }} -r us-south
+        ibmcloud cr login
+
+    - name: Build image
+      run: |
+        docker build -t us.icr.io/workspace1/fashionstylefinder:latest .
+
+    - name: Push image
+      run: |
+        docker push us.icr.io/workspace1/fashionstylefinder:latest
+
+    - name: Deploy to Code Engine
+      run: |
+        ibmcloud ce project select -n ce-project-16
+        ibmcloud ce app update \
+          --name fashionstylefinder \
+          --image us.icr.io/workspace1/fashionstylefinder:latest

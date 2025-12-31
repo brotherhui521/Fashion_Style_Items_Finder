@@ -1,4 +1,4 @@
-ibm-watsonx-ai==1.1.20
+ibm-watsonx-ai
 image==1.5.33
 requests==2.32.0
 pillow==11.0.0
@@ -11,5 +11,5 @@ scikit-learn==1.5.2
 gradio==5.22.0
 pandas
 numpy
-"dastapi[standard]"
+fastapi[standard]
 pydantic
