@@ -32,5 +32,5 @@ jobs:
         run: |
           ibmcloud ce project select -n ce-project-16
           ibmcloud ce app update \
-            --name fashionstylefinder \
+            --name application-c0 \
             --image $IMAGE_NAME
